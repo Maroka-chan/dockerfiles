@@ -6,7 +6,8 @@ FROM eclipse-temurin:11-alpine
 # map to a more privileged user on the host
 # in the case of a container breakout.
 RUN addgroup --gid 10001 --system nonroot \
- && adduser --uid 10000 --system --ingroup nonroot --home /home/nonroot nonroot
+ && adduser --uid 10000 --system --ingroup nonroot \
+ --no-create-home --disabled-password nonroot
 
 # Initial and max heap size for the java application
 ARG heap_size=1G
@@ -29,10 +30,13 @@ ENV VELOCITY_JAR_URL=$velocity_jar_url
 # Add the Velocity jar
 ADD --chown=nonroot:nonroot ${VELOCITY_JAR_URL} /opt/velocity/velocity.jar
 
-# Add persistent storage for the velocity configuration
-VOLUME /home/nonroot
+# Add data directory owned by the non-root user
+RUN mkdir /data && chown -R nonroot:nonroot /data
+
+# Add persistent storage for the Velocity configuration
+VOLUME /data
 # Change directory before running the application
-WORKDIR /home/nonroot
+WORKDIR /data
 
 # Use the non-root user to run the application
 USER nonroot
