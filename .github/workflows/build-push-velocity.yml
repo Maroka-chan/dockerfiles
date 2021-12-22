@@ -24,14 +24,14 @@ jobs:
       run: echo "IMAGE_AUTHOR=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
         
     - name: Set Image Id
-      run: echo "IMAGE_ID=$REGISTRY/${{ env.IMAGE_AUTHOR }}/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_ENV
+      run: echo "IMAGE_ID=$REGISTRY/${{ env.IMAGE_AUTHOR }}/$IMAGE_NAME" >> $GITHUB_ENV
 
     - name: Build the Docker image
-      run: docker build ./$IMAGE_NAME --tag ${{ env.IMAGE_ID }}
+      run: docker build ./$IMAGE_NAME -t ${{ env.IMAGE_ID }}:$IMAGE_TAG -t ${{ env.IMAGE_ID }}:latest
       
     - name: Log into Github Container Registry
       run: docker login https://ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
       
     - name: Push image to Github Container Registry
       run:
-        docker push ${{ env.IMAGE_ID }}
+        docker push ${{ env.IMAGE_ID }}:latest
