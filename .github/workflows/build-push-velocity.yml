@@ -20,10 +20,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Set owner name lowercase
-      run:
-        echo "IMAGE_AUTHOR=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-        echo "IMAGE_ID=$REGISTRY/${{ env.IMAGE_AUTHOR }}/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_ENV
+    - name: Set Owner Name lowercase
+      run: echo "IMAGE_AUTHOR=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        
+    - name: Set Image Id
+      run: echo "IMAGE_ID=$REGISTRY/${{ env.IMAGE_AUTHOR }}/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_ENV
 
     - name: Build the Docker image
       run: docker build ./velocity --tag ${{ env.IMAGE_ID }}
