@@ -4,5 +4,5 @@ Velocity is a Minecraft server proxy written in Java which focuses on scalabilit
 
 ## Pull Docker Image
 ```
-docker pull ghcr.io/Maroka-chan/velocity:latest
+docker pull ghcr.io/maroka-chan/velocity:latest
 ```
