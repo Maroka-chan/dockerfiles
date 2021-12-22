@@ -11,7 +11,6 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: velocity
   IMAGE_TAG: ${{ github.sha }}
-  IMAGE_ID: $REGISTRY/$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')/$IMAGE_NAME:$IMAGE_TAG
 
 jobs:
   buildImage:
@@ -21,12 +20,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Set owner name lowercase
+      run:
+        echo "IMAGE_AUTHOR=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        echo "IMAGE_ID=$REGISTRY/${{ env.IMAGE_AUTHOR }}/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_ENV
+
     - name: Build the Docker image
-      run: docker build ./velocity --tag $IMAGE_ID
+      run: docker build ./velocity --tag ${{ env.IMAGE_ID }}
       
     - name: Log into Github Container Registry
       run: docker login https://ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
       
     - name: Push image to Github Container Registry
-      run: 
-        docker push $IMAGE_ID
+      run:
+        docker push ${{ env.IMAGE_ID }}
