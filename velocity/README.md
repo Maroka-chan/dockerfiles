@@ -1,6 +1,6 @@
 # Velocity
 
-Velocity is a Minecraft server proxy focused on scalability and flexibility.
+Velocity is a Minecraft server proxy written in Java which focuses on scalability and flexibility.
 
 
 ## Pull Docker Image
