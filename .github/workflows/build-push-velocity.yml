@@ -27,7 +27,7 @@ jobs:
       run: echo "IMAGE_ID=$REGISTRY/${{ env.IMAGE_AUTHOR }}/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_ENV
 
     - name: Build the Docker image
-      run: docker build ./velocity --tag ${{ env.IMAGE_ID }}
+      run: docker build ./$IMAGE_NAME --tag ${{ env.IMAGE_ID }}
       
     - name: Log into Github Container Registry
       run: docker login https://ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
